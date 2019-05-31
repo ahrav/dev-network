@@ -9,6 +9,7 @@ import Experience from './Experience';
 import Education from './Education';
 
 const Dashboard = ({
+  deleteAccount,
   getCurrentProfile,
   auth: { user },
   profile: { profile, loading }
