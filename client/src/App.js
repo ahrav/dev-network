@@ -9,6 +9,7 @@ import PrivateRoute from './components/routing/PrivateRoute';
 import Dashboard from './components/dashboard/Dashboard';
 import CreateProfile from './components/profile-form/CreateProfile';
 import Profiles from './components/profiles/Profiles';
+import Profile from './components/profile/Profile';
 import EditProfile from './components/profile-form/EditProfile';
 import AddExperience from './components/profile-form/AddExperience';
 import AddEducation from './components/profile-form/AddEducation';
@@ -42,6 +43,7 @@ const App = () => {
               <Route path='/login' component={Login} />
               <Route path='/register' component={Register} />
               <Route path='/profiles' component={Profiles} />
+              <Route path='/profile/:id' component={Profile} />
               <PrivateRoute exact path='/dashboard' component={Dashboard} />
               <PrivateRoute
                 exact
