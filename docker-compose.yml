@@ -7,7 +7,7 @@ services:
       dockerfile: Dockerfile.dev
       context: ./nginx
     ports:
-      - 4050:80
+      - 4005:80
   mongo:
     container_name: mongo
     image: 'mongo:latest'
