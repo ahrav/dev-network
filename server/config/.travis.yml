@@ -1,0 +1,8 @@
+sudo: required
+language: node_js
+services:
+  - docker
+before_install:
+  - docker build -t ahrav/dev-network-react-test -f ./client/Dockerfile.dev ./client
+scritp:
+  - docker run ahrav/dev-network-react-test npm test -- --coverage
