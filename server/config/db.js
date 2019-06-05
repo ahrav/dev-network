@@ -1,9 +1,7 @@
 const mongoose = require('mongoose');
-const keys = require('./keys');
+const { host, dbPort, db } = require('./config');
 
-const url = `mongodb://${keys.mongoHost}:${keys.mongoPort}/${
-  keys.mongoDatabase
-}`;
+const url = `mongodb://${host}:${dbPort}/${db}`;
 
 const connectDB = async () => {
   try {

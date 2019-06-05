@@ -1,37 +1,57 @@
-version: '3'
+version: '2.4'
 
 services:
   nginx:
     restart: always
     build:
-      dockerfile: Dockerfile.dev
       context: ./nginx
     ports:
-      - 4005:80
-  mongo:
-    container_name: mongo
-    image: 'mongo:latest'
-    ports:
-      - '27017:27017'
+      - '3050:80'
+    depends_on:
+      redis:
+        condition: service_healthy
+
   redis:
-    image: 'redis:latest'
+    image: redis:alpine
+    healthcheck:
+      test: redis-cli ping
+
+  mongo:
+    image: mongo
+    healthcheck:
+      test: echo 'db.stats().ok' | mongo localhost:27017/zenbrain --quiet
+
   api:
-    container_name: dev-connector
     build:
-      dockerfile: Dockerfile.dev
       context: ./server
+      target: dev
     volumes:
-      - /app/node_modules
       - ./server:/app
-    links:
-      - mongo
     environment:
+      - DATABASE_CLIENT=mongo
+      - NODE_ENV=development
       - REDIS_HOST=redis
       - REDIS_PORT=6379
+      - MONGO_HOST=mongo
+      - MONGO_DATABASE=devnetwork
+      - MONGO_PORT=27017
+    depends_on:
+      mongo:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
   client:
     build:
-      dockerfile: Dockerfile.dev
       context: ./client
+      target: dev
+    environment:
+      - NODE_ENV=development
     volumes:
-      - /app/node_modules
       - ./client:/app
+    depends_on:
+      redis:
+        condition: service_healthy
+
+volumes:
+  mongo-data:

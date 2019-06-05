@@ -4,11 +4,11 @@
   "description": "social network",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
     "start": "node server",
     "server": "nodemon server",
     "client": "npm start --prefix client",
-    "dev": "concurrently \"npm run server\" \"npm run client\""
+    "dev": "env $(cat .env) nodemon app.js"
   },
   "author": "ahrav",
   "license": "ISC",
@@ -27,6 +27,8 @@
   },
   "devDependencies": {
     "concurrently": "^4.1.0",
+    "dotenv": "^8.0.0",
+    "jest": "^24.8.0",
     "nodemon": "^1.19.0"
   }
 }
