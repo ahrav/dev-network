@@ -24,7 +24,6 @@ RUN npm test
 
 FROM test as pre-prod
 RUN rm -rf ./tests && rm -rf ./node_modules
-RUN npm test
 
 
 FROM nginx as prod

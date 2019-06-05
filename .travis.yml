@@ -3,7 +3,7 @@ language: node_js
 services:
   - docker
 before_install:
-  - docker build -t dev-network/client -f ./client/Dockerfile ./client
-  - docker build -t dev-network/server -f ./server/Dockerfile ./server
+  - docker build -t dev-network:client -f ./client/Dockerfile ./client
+  - docker build -t dev-network:server -f ./server/Dockerfile ./server
 script:
-  - docker run dev-network/client npm test -- --coverage
+  - docker run dev-network:client npm test -- --coverage
