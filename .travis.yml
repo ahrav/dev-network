@@ -18,10 +18,10 @@ after_success:
 deploy:
   provider: elasticbeanstalk
   region: 'us-west-1'
-  app: 'Dev-Network'
-  env: DevNetwork-env
+  app: 'Developer-Network '
+  env: DeveloperNetwork-env
   bucket_name: 'elasticbeanstalk-us-west-1-083889461427'
-  bucket_path: 'dev-network'
+  bucket_path: 'Developer-Network'
   on:
     branch: master
   access_key_id: $AWS_ACCESS_KEY
