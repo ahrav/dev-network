@@ -36,10 +36,10 @@ mongoose
     connectTimeoutMS: 10000
   })
   .then(result => {
-    const server = app.listen(port);
-    const io = require('./services/socket').init(server);
-    io.on('connection', socket => {
-      console.log('Client connected');
-    });
+    app.listen(port);
+    // const io = require('./services/socket').init(server);
+    // io.on('connection', socket => {
+    //   console.log('Client connected');
+    // });
   })
   .catch(err => console.log(err));

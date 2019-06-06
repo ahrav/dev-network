@@ -3,7 +3,7 @@ const router = express.Router();
 const { check, validationResult } = require('express-validator/check');
 const auth = require('../../middleware/auth');
 const cleanCache = require('../../middleware/cleanCache');
-const io = require('../../services/socket');
+// const io = require('../../services/socket');
 
 const Post = require('../../models/Post');
 const Profile = require('../../models/Profile');
@@ -31,7 +31,6 @@ router.post(
 
     try {
       const user = await User.findById(req.user.id).select('-password');
-      console.log(user);
 
       const newPost = new Post({
         text: req.body.text,
@@ -42,10 +41,10 @@ router.post(
 
       const post = await newPost.save();
 
-      io.getIO().emit('posts', {
-        action: 'create',
-        post: { ...post._doc }
-      });
+      // io.getIO().emit('posts', {
+      //   action: 'create',
+      //   post: { ...post._doc }
+      // });
 
       res.json(post);
     } catch (err) {
@@ -201,9 +200,7 @@ router.post(
 
     try {
       const user = await User.findById(req.user.id).select('-password');
-      const post = await Post.findById(req.params.id).cache({
-        key: req.user.id
-      });
+      const post = await Post.findById(req.params.id);
 
       const newComment = {
         text: req.body.text,

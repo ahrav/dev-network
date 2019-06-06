@@ -1,0 +1,33 @@
+{
+  "AWSEBDockerrunVersion": 2,
+  "containerDefinitions": [
+    {
+      "name": "client",
+      "image": "ahrav/dev-network-client",
+      "hostname": "client",
+      "memory": 128,
+      "essential": false
+    },
+    {
+      "name": "server",
+      "image": "ahrav/dev-network-server",
+      "hostname": "api",
+      "memory": 128,
+      "essential": false
+    },
+    {
+      "name": "nginx",
+      "image": "ahrav/dev-network-nginx",
+      "hostname": "nginx",
+      "memory": 128,
+      "essential": true,
+      "portMappings": [
+        {
+          "hostPort": 80,
+          "containerPort": 80
+        }
+      ],
+      "links": ["client", "server"]
+    }
+  ]
+}

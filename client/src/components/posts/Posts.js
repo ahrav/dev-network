@@ -1,25 +1,27 @@
 import React, { Fragment, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import openSocket from 'socket.io-client';
+// import openSocket from 'socket.io-client';
 import Spinner from '../layout/Spinner';
 import PostItem from './PostItem';
 import PostForm from './PostForm';
-import { getPosts, addPost } from '../../actions/post';
+import { getPosts } from '../../actions/post';
 
-const Posts = ({ getPosts, addPost, post: { posts, loading } }) => {
+const Posts = ({ getPosts, post: { posts, loading } }) => {
   useEffect(() => {
     getPosts();
-    const socket = openSocket('http://localhost');
-    socket.on('posts', data => {
-      if (data.action === 'create') {
-        console.log(data.post);
-        addPost(data.post);
-      } else if (data.action === 'delete') {
-        getPosts();
-      }
-    });
-  }, [posts.length]);
+    // const socket = openSocket('http://localhost');
+    // socket.on('posts', data => {
+    //   if (data.action === 'create') {
+    //     addPost(data.post);
+    //     setPostsList([...postsList, data.post]);
+    //     setTotalPosts(totalPosts + 1);
+    //     console.log(totalPosts);
+    //   } else if (data.action === 'delete') {
+    //     getPosts();
+    //   }
+    // });
+  }, [getPosts]);
 
   return loading ? (
     <Spinner />
@@ -52,5 +54,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { getPosts, addPost }
+  { getPosts }
 )(Posts);
