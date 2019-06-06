@@ -9,7 +9,6 @@ ENV PATH /app/node_modules/.bin:$PATH
 COPY . /app
 RUN npm run build
 
-
 FROM builder as dev
 ENV NODE_ENV=development
 RUN apk update
