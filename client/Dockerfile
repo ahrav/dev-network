@@ -19,11 +19,12 @@ RUN npm install --only=development\
 CMD ["npm", "start"]
 
 FROM dev as test
+ENV CI=true
 RUN npm audit
-RUN npm test
+RUN npm test -- --coverage
 
 FROM test as pre-prod
-RUN rm -rf ./tests && rm -rf ./node_modules
+RUN rm -rf ./__tests__ && rm -rf ./node_modules
 
 
 FROM nginx as prod

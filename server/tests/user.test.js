@@ -6,17 +6,17 @@ const User = require('../models/User');
 const { jwtSecret } = require('../config/config');
 
 const UserOneId = new mongoose.Types.ObjectId();
-const userOne = {
-  _id: UserOneId,
-  name: 'jonny',
-  email: 'aggarr@gone.com',
-  password: 'niceepasss',
-  tokens: [
-    {
-      token: jwt.sign({ _id: UserOneId }, jwtSecret)
-    }
-  ]
-};
+// const userOne = {
+//   _id: UserOneId,
+//   name: 'jonny',
+//   email: 'aggarr@gone.com',
+//   password: 'niceepasss',
+//   tokens: [
+//     {
+//       token: jwt.sign({ _id: UserOneId }, jwtSecret)
+//     }
+//   ]
+// };
 
 let token;
 

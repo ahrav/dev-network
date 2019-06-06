@@ -19,7 +19,7 @@ CMD ["nodemon", "./bin/www"]
 FROM dev as test
 COPY . .
 RUN npm audit
-RUN npm test
+CMD ["npm", "test"]
 
 FROM test as pre-prod
 RUN rm -rf ./tests && rm -rf ./node_modules
