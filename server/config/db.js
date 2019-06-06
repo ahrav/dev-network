@@ -1,6 +1,8 @@
 const mongoose = require('mongoose');
-const { host, dbPort, db } = require('./config');
+const express = require('express');
+const { host, dbPort, db, port } = require('./config');
 
+const app = express();
 const url = `mongodb://${host}:${dbPort}/${db}`;
 
 const connectDB = async () => {
@@ -15,6 +17,13 @@ const connectDB = async () => {
     });
 
     console.log('MongoDB connected...');
+
+    const PORT = port || 5000;
+    const server = await app.listen(PORT);
+    const io = await require('../services/socket').init(server);
+    io.on('connection', socket => {
+      console.log('Client connected');
+    });
   } catch (err) {
     console.log(err);
     // exit process with failure

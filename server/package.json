@@ -7,8 +7,8 @@
     "test": "jest",
     "start": "node server",
     "server": "nodemon server",
-    "client": "npm start --prefix client",
-    "dev": "env $(cat .env) nodemon app.js"
+    "client": "cd ../client && npm start",
+    "dev": "concurrently \"npm run server\" \"npm run client\""
   },
   "author": "ahrav",
   "license": "ISC",
@@ -23,12 +23,12 @@
     "mongoose": "^5.5.10",
     "redis": "^2.8.0",
     "redux": "^4.0.1",
-    "request": "^2.88.0"
+    "request": "^2.88.0",
+    "socket.io": "^2.2.0"
   },
   "devDependencies": {
     "concurrently": "^4.1.0",
     "dotenv": "^8.0.0",
-    "jest": "^24.8.0",
     "nodemon": "^1.19.0"
   }
 }

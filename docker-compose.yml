@@ -6,7 +6,7 @@ services:
     build:
       context: ./nginx
     ports:
-      - '3050:80'
+      - '80:80'
     depends_on:
       redis:
         condition: service_healthy
@@ -19,7 +19,7 @@ services:
   mongo:
     image: mongo
     healthcheck:
-      test: echo 'db.stats().ok' | mongo localhost:27017/zenbrain --quiet
+      test: echo 'db.stats().ok' | mongo localhost:27017/devnetwork --quiet
 
   api:
     build:

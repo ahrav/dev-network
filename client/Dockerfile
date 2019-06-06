@@ -1,6 +1,6 @@
 from node:10.16-alpine as builder
 ENV NODE_ENV=production
-WORKDIR '/app'
+WORKDIR /app
 COPY package*.json ./
 RUN npm config list \
   && npm ci \

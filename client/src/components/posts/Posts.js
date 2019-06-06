@@ -1,15 +1,25 @@
 import React, { Fragment, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import openSocket from 'socket.io-client';
 import Spinner from '../layout/Spinner';
 import PostItem from './PostItem';
 import PostForm from './PostForm';
-import { getPosts } from '../../actions/post';
+import { getPosts, addPost } from '../../actions/post';
 
-const Posts = ({ getPosts, post: { posts, loading } }) => {
+const Posts = ({ getPosts, addPost, post: { posts, loading } }) => {
   useEffect(() => {
     getPosts();
-  }, [getPosts]);
+    const socket = openSocket('http://localhost');
+    socket.on('posts', data => {
+      if (data.action === 'create') {
+        console.log(data.post);
+        addPost(data.post);
+      } else if (data.action === 'delete') {
+        getPosts();
+      }
+    });
+  }, [posts.length]);
 
   return loading ? (
     <Spinner />
@@ -42,5 +52,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { getPosts }
+  { getPosts, addPost }
 )(Posts);
