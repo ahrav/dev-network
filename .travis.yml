@@ -5,3 +5,25 @@ services:
 script:
   - docker build -t dev-network:client -f ./client/Dockerfile ./client
   - docker build -t dev-network:server -f ./server/Dockerfile ./server
+
+after_success:
+  - docker build -t ahrav/dev-network-client ./client
+  - docker build -t ahrav/dev-network-server ./server
+  - docker build -t ahrav/dev-network-nginx
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+  - docker push ahrav/dev-network-client
+  - docker push ahrav/dev-network-server
+  - docker push ahrav/dev-network-nginx
+
+deploy:
+  provider: elasticbeanstalk
+  region: 'us-west-1'
+  app: 'Dev-Network'
+  env: DevNetwork-env
+  bucket_name: 'elasticbeanstalk-us-west-1-083889461427'
+  bucket_path: 'dev-network'
+  on:
+    branch: master
+  access_key_id: $AWS_ACCESS_KEY
+  secret_access_key:
+    secure: $AWS_SECRET_KEY
