@@ -1,6 +1,6 @@
 const express = require('express');
 const request = require('request');
-const { githubClientId, githubSecret } = require('../../config/config');
+const keys = require('../../config/keys');
 const router = express.Router();
 const auth = require('../../middleware/auth');
 const { check, validationResult } = require('express-validator/check');
@@ -339,7 +339,9 @@ router.get('/github/:username', (req, res) => {
     const options = {
       uri: `https://api.github.com/users/${
         req.params.username
-      }/repos?per_page=5&sort=created:asc&client_id=${githubClientId}&client_secret=${githubSecret}`,
+      }/repos?per_page=5&sort=created:asc&client_id=${
+        keys.githubClientId
+      }&client_secret=${keys.githubSecret}`,
       method: 'GET',
       headers: { 'user-agent': 'node.js' }
     };

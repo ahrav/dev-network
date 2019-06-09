@@ -1,9 +1,9 @@
 const mongoose = require('mongoose');
 const express = require('express');
-const { host, dbPort, db, port } = require('./config');
+const keys = require('../config/keys');
 
 const app = express();
-const url = `mongodb://${host}:${dbPort}/${db}`;
+const url = keys.mongoUri;
 
 const connectDB = async () => {
   try {

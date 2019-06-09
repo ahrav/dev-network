@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const express = require('express');
-const { host, dbPort, db, port } = require('./config/config');
+const keys = require('./config/keys');
 const cors = require('cors');
 
 const app = express();
@@ -24,10 +24,8 @@ app.use('/auth', require('./routes/api/auth'));
 app.use('/profile', require('./routes/api/profile'));
 app.use('/posts', require('./routes/api/posts'));
 
-const url = `mongodb://${host}:${dbPort}/${db}`;
-
 mongoose
-  .connect(url, {
+  .connect(keys.mongoUri, {
     useNewUrlParser: true,
     useCreateIndex: true,
     useFindAndModify: false,
@@ -36,7 +34,8 @@ mongoose
     connectTimeoutMS: 10000
   })
   .then(result => {
-    app.listen(port);
+    const PORT = process.env.PORT || 5000;
+    app.listen(PORT);
     // const io = require('./services/socket').init(server);
     // io.on('connection', socket => {
     //   console.log('Client connected');
