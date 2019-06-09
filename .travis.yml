@@ -9,7 +9,7 @@ script:
 after_success:
   - docker build -t ahrav/dev-network-client ./client
   - docker build -t ahrav/dev-network-server ./server
-  - docker build -t ahrav/dev-network-nginx
+  - docker build -t ahrav/dev-network-nginx ./nginx
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
   - docker push ahrav/dev-network-client
   - docker push ahrav/dev-network-server
