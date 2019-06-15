@@ -1,58 +1,38 @@
+const { check, validationResult } = require('express-validator/check');
+const auth = require('../middleware/auth');
+const cleanCache = require('../middleware/cleanCache');
 const express = require('express');
 const router = express.Router();
-const { check, validationResult } = require('express-validator/check');
-const auth = require('../../middleware/auth');
-const cleanCache = require('../../middleware/cleanCache');
 // const io = require('../../services/socket');
 
-const Post = require('../../models/Post');
-const Profile = require('../../models/Profile');
-const User = require('../../models/User');
+const { Post, validate } = require('../models/Post');
+const { User } = require('../models/User');
 
 // @route    POST api/posts
 // @desc     Create a post
 // @access   Private
-router.post(
-  '/',
-  [
-    auth,
-    cleanCache,
-    [
-      check('text', 'Text is required')
-        .not()
-        .isEmpty()
-    ]
-  ],
-  async (req, res) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
-    }
+router.post('/', auth, async (req, res) => {
+  const { error } = validate(req.body);
+  if (error) return res.status(400).send(error.details[0].message);
 
-    try {
-      const user = await User.findById(req.user.id).select('-password');
+  const user = await User.findById(req.user._id).select('-password');
 
-      const newPost = new Post({
-        text: req.body.text,
-        name: user.name,
-        avatar: user.avatar,
-        user: req.user.id
-      });
+  const newPost = new Post({
+    text: req.body.text,
+    name: user.name,
+    avatar: user.avatar,
+    user: req.user.id
+  });
 
-      const post = await newPost.save();
+  const post = await newPost.save();
 
-      // io.getIO().emit('posts', {
-      //   action: 'create',
-      //   post: { ...post._doc }
-      // });
+  // io.getIO().emit('posts', {
+  //   action: 'create',
+  //   post: { ...post._doc }
+  // });
 
-      res.json(post);
-    } catch (err) {
-      console.error(err.message);
-      res.status(500).send('Server Error');
-    }
-  }
-);
+  res.send(post);
+});
 
 // @route    GET api/posts
 // @desc     Get all posts
@@ -62,7 +42,7 @@ router.get('/', auth, async (req, res) => {
     const posts = await Post.find()
       .sort({ date: -1 })
       .cache({
-        key: req.user.id
+        key: req.user._id
       });
     res.json(posts);
   } catch (err) {
@@ -263,5 +243,4 @@ router.delete(
     }
   }
 );
-
 module.exports = router;

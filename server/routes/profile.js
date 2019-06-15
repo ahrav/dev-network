@@ -1,13 +1,13 @@
-const express = require('express');
 const request = require('request');
-const keys = require('../../config/keys');
-const router = express.Router();
-const auth = require('../../middleware/auth');
+const keys = require('../config/keys');
+const auth = require('../middleware/auth');
 const { check, validationResult } = require('express-validator/check');
+const express = require('express');
+const router = express.Router();
 
-const Profile = require('../../models/Profile');
-const User = require('../../models/User');
-const Post = require('../../models/Post');
+const { Profile, validate } = require('../models/Profile');
+const { User } = require('../models/User');
+const { Post } = require('../models/Post');
 
 // @route    GET api/profile/me
 // @desc     Get current users profile
@@ -360,5 +360,4 @@ router.get('/github/:username', (req, res) => {
     res.status(500).send('Server Error');
   }
 });
-
 module.exports = router;

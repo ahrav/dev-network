@@ -1,10 +1,11 @@
 const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
+const Joi = require('joi');
+const { Schema } = mongoose;
 
-const PostSchema = new Schema({
+const postSchema = new Schema({
   user: {
     type: Schema.Types.ObjectId,
-    ref: 'users'
+    ref: 'User'
   },
   text: {
     type: String,
@@ -20,7 +21,7 @@ const PostSchema = new Schema({
     {
       user: {
         type: Schema.Types.ObjectId,
-        ref: 'users'
+        ref: 'User'
       }
     }
   ],
@@ -28,7 +29,7 @@ const PostSchema = new Schema({
     {
       user: {
         type: Schema.Types.ObjectId,
-        ref: 'users'
+        ref: 'User'
       },
       text: {
         type: String,
@@ -52,4 +53,14 @@ const PostSchema = new Schema({
   }
 });
 
-module.exports = Post = mongoose.model('post', PostSchema);
+const Post = mongoose.model('Post', postSchema);
+
+const validatePost = post => {
+  const schema = {
+    text: Joi.string().required()
+  };
+  return Joi.validate(post, schema);
+};
+
+exports.Post = Post;
+exports.validate = validatePost;
